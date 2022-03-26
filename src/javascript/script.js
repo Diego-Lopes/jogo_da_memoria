@@ -4,35 +4,18 @@ const FRONT = "card_front";
 const BACK = "card_back";
 const CARD = "card";
 const ICON = "icon";
-let cards = null;
-
-let techs = [
-  "bootstrap",
-  "css",
-  "electron",
-  "firebase",
-  "html",
-  "javascript",
-  "jquery",
-  "mongo",
-  "node",
-  "react",
-];
 
 startGamer();
 
 function startGamer() {
-  cards = createCardsFromTechs(techs);
-  shuffleCards(cards);
-
   //criando os modelos visual das catas
-  initializeCards(cards);
+  initializeCards(game.createCardsFromTechs());
 }
 
-function initializeCards(cards) {
+function initializeCards() {
   let gameBoard = document.getElementById("gameBoard");
 
-  cards.forEach((card) => {
+  game.cards.forEach((card) => {
     //criando elemento
     let cardElement = document.createElement("div");
     cardElement.id = card.id; //add id
@@ -70,62 +53,7 @@ function createCardFace(face, card, element) {
   element.appendChild(cardElementFace);
 }
 
-//embaralhando as cartas
-function shuffleCards(cards) {
-  let currentIndex = cards.length;
-  let randomIndex = 0;
-
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    [cards[randomIndex], cards[currentIndex]] = [
-      cards[currentIndex],
-      cards[randomIndex],
-    ]; //inversão de valores
-  }
-}
-
 createCardsFromTechs(techs);
-
-//criando o modelo da carta
-function createCardsFromTechs(techs) {
-  //criando as cards
-  let cards = [];
-
-  // for (let tech of techs) {
-  //   cards.push(createPairFromTech(tech));
-  // }
-
-  techs.forEach((tech) => {
-    cards.push(createPairFromTech(tech));
-  });
-
-  /** flatMap ele desmebra qualquer array
-   * isolada e pega seu conteúdo e
-   * coloca em uma única */
-  return cards.flatMap((pair) => pair);
-}
-
-function createPairFromTech(tech) {
-  //conteúdo da card
-  return [
-    {
-      id: createIdWithTech(tech),
-      icon: tech,
-      flipped: false,
-    },
-    {
-      id: createIdWithTech(tech),
-      icon: tech,
-      flipped: false,
-    },
-  ];
-}
-
-function createIdWithTech(tech) {
-  return tech + parseInt(Math.random() * 1000); //sendo o id.
-}
 
 //flip cards
 function flipCard() {
