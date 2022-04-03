@@ -57,5 +57,28 @@ createCardsFromTechs(techs);
 
 //flip cards
 function flipCard() {
-  this.classList.add("flip");
+  if (game.setCard(this.id)) {
+    this.classList.add("flip");
+
+    /**chamando a função para verificar se são iguais.
+     * colocamos um if quando o match for true, executar outra função
+     * de limpar as variáveis.
+     */
+    if (game.checkMatch()) {
+      game.clearCards();
+    } else {
+      /** caso não, pegamos os id das cartas que estão flipada e
+       * removemos a class flip
+       */
+
+      setTimeout(() => {
+        let firstCardView = document.getElementById(game.firstCard.id);
+        let secondCardView = document.getElementById(game.secondCard.id);
+
+        firstCardView.classList.remove("flip");
+        secondCardView.classList.remove("flip");
+        game.clearCards();
+      }, 1000);
+    }
+  }
 }
