@@ -3,40 +3,6 @@ let game = {
   firstCard: null,
   secondCard: null,
 
-  //configurando a carta escolhida.
-  setCard: function (id) {
-    let card = this.cards.filter((card) => card.id === id)[0];
-    //vai fazer um filtro e retornar um array e queremos apenas o index zero.
-
-    //condição, se a carta já for virada ou em lockMode retornar false.
-    if (card.flipped || this.lockMode) {
-      return false;
-    }
-
-    //depois de passar desse condições acima
-    if (!this.firstCard) {
-      this.firstCard = card;
-      return true;
-    } else {
-      // se a firstCard estiver preenchido vai para secondCard
-      this.secondCard = card;
-      this.lockMode = true; //e em seguida é feito o lockMode.
-      return true;
-    }
-  },
-
-  //criando função de matchCard.
-  checkMatch: function () {
-    return this.firstCard.icon === this.secondCard.icon;
-  },
-
-  //função de liberar as cartas em verificação da condição.
-  clearCards: function () {
-    this.firstCard = null;
-    this.secondCard = null;
-    this.lockMode = false;
-  },
-
   techs: [
     "bootstrap",
     "css",
@@ -51,6 +17,56 @@ let game = {
   ],
 
   cards: null,
+
+  //configurando a carta escolhida.
+  setCard: function (id) {
+    let card = this.cards.filter((card) => card.id === id)[0];
+    //vai fazer um filtro e retornar um array e queremos apenas o index zero.
+
+    //condição, se a carta já for virada ou em lockMode retornar false.
+    if (card.flipped || this.lockMode) {
+      return false;
+    }
+
+    //depois de passar desse condições acima
+    if (!this.firstCard) {
+      this.firstCard = card;
+      this.firstCard.flipped = true;
+      return true;
+    } else {
+      // se a firstCard estiver preenchido vai para secondCard
+      this.secondCard = card;
+      this.lockMode = true; //e em seguida é feito o lockMode.
+      this.secondCard.flipped = true;
+      return true;
+    }
+  },
+
+  //criando função de matchCard.
+  checkMatch: function () {
+    //verificar se a carta 2 está selecionada.
+    if (!this.firstCard || !this.secondCard) {
+      return false;
+    }
+    return this.firstCard.icon === this.secondCard.icon;
+  },
+
+  //função de liberar as cartas em verificação da condição.
+  clearCards: function () {
+    this.firstCard = null;
+    this.secondCard = null;
+    this.lockMode = false;
+  },
+
+  unflipCards: function () {
+    this.firstCard.flipped = false;
+    this.secondCard.flipped = false;
+    this.clearCards();
+  },
+
+  checkGameOver() {
+    return this.cards.filter((card) => !card.flipped).length == 0;
+  },
 
   //criando o modelo da carta
   createCardsFromTechs: function () {
