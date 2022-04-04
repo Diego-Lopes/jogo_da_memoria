@@ -8,12 +8,15 @@ const ICON = "icon";
 startGamer();
 
 function startGamer() {
-  //criando os modelos visual das catas
+  //criando os modelos visual das cartas
   initializeCards(game.createCardsFromTechs());
 }
 
 function initializeCards() {
   let gameBoard = document.getElementById("gameBoard");
+
+  //limpando o tabuleiro;
+  gameBoard.innerHTML = "";
 
   game.cards.forEach((card) => {
     //criando elemento
@@ -60,25 +63,40 @@ function flipCard() {
   if (game.setCard(this.id)) {
     this.classList.add("flip");
 
-    /**chamando a função para verificar se são iguais.
-     * colocamos um if quando o match for true, executar outra função
-     * de limpar as variáveis.
-     */
-    if (game.checkMatch()) {
-      game.clearCards();
-    } else {
-      /** caso não, pegamos os id das cartas que estão flipada e
-       * removemos a class flip
+    //validando se temos duas cartas selecionadas.
+    if (game.secondCard) {
+      /**chamando a função para verificar se são iguais.
+       * colocamos um if quando o match for true, executar outra função
+       * de limpar as variáveis.
        */
-
-      setTimeout(() => {
-        let firstCardView = document.getElementById(game.firstCard.id);
-        let secondCardView = document.getElementById(game.secondCard.id);
-
-        firstCardView.classList.remove("flip");
-        secondCardView.classList.remove("flip");
+      if (game.checkMatch()) {
         game.clearCards();
-      }, 1000);
+        //verificando se é deu fim de jogo
+        if (game.checkGameOver()) {
+          let gameOverlayer = document.getElementById("gameOver");
+          gameOverlayer.style.display = "flex";
+        }
+      } else {
+        /** caso não, pegamos os id das cartas que estão flipada e
+         * removemos a class flip
+         */
+
+        setTimeout(() => {
+          let firstCardView = document.getElementById(game.firstCard.id);
+          let secondCardView = document.getElementById(game.secondCard.id);
+
+          firstCardView.classList.remove("flip");
+          secondCardView.classList.remove("flip");
+          game.unflipCards();
+        }, 1000);
+      }
     }
   }
+}
+
+function restart() {
+  game.clearCards();
+  startGamer();
+  let gameOverlayer = document.getElementById("gameOver");
+  gameOverlayer.style.display = "none";
 }
