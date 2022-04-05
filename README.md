@@ -10,7 +10,7 @@
 
 Este projeto foi feito com HTML5, CSS, JAVASCRIPT, nele o Igor demonstrar como fazer um jogo e regra de negócio no javascript.
 
-<img href='./assets/images/jogo.png' alt="imagem do jogo" />
+<img href='./src/assets/images/jogo.png' alt="imagem do jogo" />
 
 ---
 
